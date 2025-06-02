@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 import { useChat } from '../../context/ChatContext';
 
-const PromptCtx = memo(function Prompt() {
+const PromptCtx = memo(function PromptCtx() {
   const { sendMessage } = useChat();
   const [input, setInput] = useState('');
 

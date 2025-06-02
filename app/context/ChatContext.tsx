@@ -12,6 +12,8 @@ interface ChatContextType {
   messages: ChatMessage[];
   isTyping: boolean;
   sendMessage: (content: string) => void;
+  titlePage: string;
+  setTitlePage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const STORAGE_KEY = 'chat_messages';
@@ -21,6 +23,7 @@ const ChatContext = createContext<ChatContextType | undefined>(undefined);
 export function ChatProvider({ children }: { children: ReactNode }) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [titlePage, setTitlePage] = useState('Tip: Lab Context API');
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -63,7 +66,9 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ChatContext.Provider value={{ messages, sendMessage, isTyping }}>
+    <ChatContext.Provider
+      value={{ messages, sendMessage, isTyping, titlePage, setTitlePage }}
+    >
       {children}
     </ChatContext.Provider>
   );

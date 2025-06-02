@@ -1,7 +1,7 @@
 import { useChat } from '../../context/ChatContext';
 import { useEffect, useMemo, useRef, memo } from 'react';
 
-const MessageListCtx = memo(function MessageList() {
+const MessageListCtx = memo(function MessageListCtx() {
   const { messages, isTyping } = useChat();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 

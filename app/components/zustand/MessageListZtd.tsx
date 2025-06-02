@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, memo } from 'react';
 import { useChatStore } from '../../stores/useChatStore';
 import { useApiStore } from '../../stores/useApiStore';
 
-const MessageListZtd = memo(function MessageList() {
+const MessageListZtd = memo(function MessageListZtd() {
   const messages = useChatStore((state) => state.messages);
   const isTyping = useApiStore((state) => state.isTyping);
   const bottomRef = useRef<HTMLDivElement | null>(null);

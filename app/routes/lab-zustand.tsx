@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useChatStore } from '../stores/useChatStore';
 import { MessageListZtd } from '~/components/zustand/MessageListZtd';
 import { PromptZtd } from '~/components/zustand/PromptZtd';
+import { TitlePageZtd } from '~/components/zustand/TitlePageZtd';
 
 export default function LabZustand() {
   const loadMessagesFromStorage = useChatStore(
@@ -14,11 +15,7 @@ export default function LabZustand() {
 
   return (
     <main className='flex flex-col h-screen w-screen bg-zinc-900 text-zinc-100'>
-      <header className='px-4 py-3 border-b border-zinc-700'>
-        <div className='text-center text-white text-lg font-semibold'>
-          Tip: Lab Zustand
-        </div>
-      </header>
+      <TitlePageZtd />
 
       <div className='flex-1 overflow-y-auto px-4 py-6'>
         <MessageListZtd />

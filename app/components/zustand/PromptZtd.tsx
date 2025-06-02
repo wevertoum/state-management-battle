@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 import { useChatStore } from '../../stores/useChatStore';
 
-const PromptZtd = memo(function Prompt() {
+const PromptZtd = memo(function PromptZtd() {
   const sendMessage = useChatStore((state) => state.sendMessage);
   const [input, setInput] = useState('');
 

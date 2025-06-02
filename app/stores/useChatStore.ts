@@ -9,6 +9,7 @@ interface ChatStore {
   messages: ChatMessage[];
   sendMessage: (content: string) => void;
   loadMessagesFromStorage: () => void;
+  titlePage: string;
 }
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -54,10 +55,14 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       };
       const updatedMessages = [...get().messages, botMessage];
       set({ messages: updatedMessages });
+
       if (typeof window !== 'undefined') {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
       }
+
       useApiStore.getState().setIsTyping(false);
     }, 1500);
   },
+
+  titlePage: 'Tip: Lab Zustand',
 }));
