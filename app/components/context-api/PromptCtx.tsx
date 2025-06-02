@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { useChat } from '../context/ChatContext';
+import { useState, memo } from 'react';
+import { useChat } from '../../context/ChatContext';
 
-export function Prompt() {
+const PromptCtx = memo(function Prompt() {
   const { sendMessage } = useChat();
   const [input, setInput] = useState('');
 
@@ -33,4 +33,6 @@ export function Prompt() {
       </button>
     </form>
   );
-}
+});
+
+export { PromptCtx };

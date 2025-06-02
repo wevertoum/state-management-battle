@@ -1,7 +1,6 @@
+import { MessageListCtx } from '~/components/context-api/MessageListCtx';
 import { ChatProvider } from '../context/ChatContext';
-import { MessageList } from '../components/MessageList';
-import { Prompt } from '../components/Prompt';
-
+import { PromptCtx } from '~/components/context-api/PromptCtx';
 export default function LabApiContext() {
   return (
     <ChatProvider>
@@ -13,11 +12,11 @@ export default function LabApiContext() {
         </header>
 
         <div className='flex-1 overflow-y-auto px-4 py-6'>
-          <MessageList />
+          <MessageListCtx />
         </div>
 
         <div className='border-t border-zinc-700 p-4 bg-zinc-900 sticky bottom-0'>
-          <Prompt />
+          <PromptCtx />
         </div>
       </main>
     </ChatProvider>
