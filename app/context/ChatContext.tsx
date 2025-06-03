@@ -14,13 +14,22 @@ interface ChatContextType {
   sendMessage: (content: string) => void;
   titlePage: string;
   setTitlePage: React.Dispatch<React.SetStateAction<string>>;
+  token?: string;
+}
+
+interface ChatProviderProps {
+  children: ReactNode;
+  token?: string;
 }
 
 const STORAGE_KEY = 'chat_messages';
 
 const ChatContext = createContext<ChatContextType | undefined>(undefined);
 
-export function ChatProvider({ children }: { children: ReactNode }) {
+export function ChatProvider({
+  children,
+  token = 'Tip: Lab Context API',
+}: ChatProviderProps) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const [titlePage, setTitlePage] = useState('Tip: Lab Context API');
@@ -45,7 +54,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const sendMessage = (content: string) => {
     setTitlePage('Novo title após enviar mensagem - ctx');
     const humanMessage: ChatMessage = {
-      content,
+      content: content + ` - TOKEN: ${token}`,
       author: 'human',
       dateTime: new Date(),
       type: 'text',
@@ -68,7 +77,14 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
   return (
     <ChatContext.Provider
-      value={{ messages, sendMessage, isTyping, titlePage, setTitlePage }}
+      value={{
+        messages,
+        sendMessage,
+        isTyping,
+        titlePage,
+        setTitlePage,
+        token,
+      }}
     >
       {children}
     </ChatContext.Provider>

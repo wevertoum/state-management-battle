@@ -1,69 +1,74 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type { ChatMessage } from '../types/chat';
 import { faker } from '@faker-js/faker';
-import { useApiStore } from './useApiStore';
+import { useAuthStore } from './useAuthStore';
 
-const STORAGE_KEY = 'chat_messages';
+interface ChatActions {
+  sendMessage: (content: string) => void;
+}
 
 interface ChatStore {
   messages: ChatMessage[];
-  sendMessage: (content: string) => void;
-  loadMessagesFromStorage: () => void;
   titlePage: string;
+  isTyping: boolean;
+  actions: ChatActions;
 }
 
-export const useChatStore = create<ChatStore>((set, get) => ({
-  messages: [],
+const useChatStore = create<ChatStore>()(
+  persist(
+    (set, get) => ({
+      messages: [],
+      titlePage: 'Tip: Lab Zustand',
+      isTyping: false,
+      actions: {
+        sendMessage: (content: string) => {
+          const currentToken = useAuthStore.getState().token;
+          const messageContentWithToken = currentToken
+            ? `${content} - TOKEN: ${currentToken}`
+            : content;
 
-  loadMessagesFromStorage: () => {
-    if (typeof window === 'undefined') return;
+          set({ titlePage: 'Novo title após enviar mensagem - ztd' });
 
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed: ChatMessage[] = JSON.parse(saved);
-        parsed.forEach((msg) => (msg.dateTime = new Date(msg.dateTime)));
-        set({ messages: parsed });
-      } catch (e) {
-        console.error('Failed to parse chat from localStorage:', e);
-      }
+          const humanMessage: ChatMessage = {
+            content: messageContentWithToken,
+            author: 'human',
+            dateTime: new Date(),
+            type: 'text',
+          };
+
+          set((state) => ({ messages: [...state.messages, humanMessage] }));
+          set({ isTyping: true });
+
+          setTimeout(() => {
+            const botMessage: ChatMessage = {
+              content: faker.hacker.phrase(),
+              author: 'bot',
+              dateTime: new Date(),
+              type: 'text',
+            };
+            set((state) => ({ messages: [...state.messages, botMessage] }));
+            set({ isTyping: false });
+          }, 1500);
+        },
+      },
+    }),
+    {
+      name: 'chat_messages',
+      storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ messages: state.messages }),
+      onRehydrateStorage: () => (state) => {
+        if (state?.messages) {
+          state.messages.forEach(
+            (msg) => (msg.dateTime = new Date(msg.dateTime))
+          );
+        }
+      },
     }
-  },
+  )
+);
 
-  sendMessage: (content: string) => {
-    set({ titlePage: 'Novo title após enviar mensagem - ztd' });
-    const humanMessage: ChatMessage = {
-      content,
-      author: 'human',
-      dateTime: new Date(),
-      type: 'text',
-    };
-
-    const newMessages = [...get().messages, humanMessage];
-    set({ messages: newMessages });
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newMessages));
-    }
-
-    useApiStore.getState().setIsTyping(true);
-
-    setTimeout(() => {
-      const botMessage: ChatMessage = {
-        content: faker.hacker.phrase(),
-        author: 'bot',
-        dateTime: new Date(),
-        type: 'text',
-      };
-      const updatedMessages = [...get().messages, botMessage];
-      set({ messages: updatedMessages });
-
-      if (typeof window !== 'undefined') {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedMessages));
-      }
-
-      useApiStore.getState().setIsTyping(false);
-    }, 1500);
-  },
-
-  titlePage: 'Tip: Lab Zustand',
-}));
+export const useChatTitlePage = () => useChatStore((state) => state.titlePage);
+export const useChatMessages = () => useChatStore((state) => state.messages);
+export const useChatIsTyping = () => useChatStore((state) => state.isTyping);
+export const useChatActions = () => useChatStore((state) => state.actions);

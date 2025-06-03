@@ -1,8 +1,8 @@
 import { useState, memo } from 'react';
-import { useChatStore } from '../../stores/useChatStore';
+import { useChatActions } from '../../stores/useChatStore';
 
 const PromptZtd = memo(function PromptZtd() {
-  const sendMessage = useChatStore((state) => state.sendMessage);
+  const { sendMessage } = useChatActions();
   const [input, setInput] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

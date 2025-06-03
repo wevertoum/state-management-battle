@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useRef, memo } from 'react';
-import { useChatStore } from '../../stores/useChatStore';
-import { useApiStore } from '../../stores/useApiStore';
+import {
+  useChatActions,
+  useChatIsTyping,
+  useChatMessages,
+} from '../../stores/useChatStore';
 
 const MessageListZtd = memo(function MessageListZtd() {
-  const messages = useChatStore((state) => state.messages);
-  const isTyping = useApiStore((state) => state.isTyping);
+  const messages = useChatMessages();
+  const isTyping = useChatIsTyping();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
