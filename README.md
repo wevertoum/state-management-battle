@@ -28,3 +28,5 @@ __________
 
 
 ![Performance Analysis - First Case](./assets/fps_zdt.png)
+
+### URL para ver o projeto rodando: [https://state-management-battle.vercel.app/](https://state-management-battle.vercel.app/)
