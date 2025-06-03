@@ -18,7 +18,7 @@ export default function LabZustand() {
 
   useEffect(() => {
     initializeToken(token);
-  }, [token, initializeToken]); // Inclui dependências para evitar chamadas desnecessárias
+  }, [token, initializeToken]);
 
   return (
     <main className='flex flex-col h-screen w-screen bg-zinc-900 text-zinc-100'>

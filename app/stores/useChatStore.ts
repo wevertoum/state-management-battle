@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import type { ChatMessage } from '../types/chat';
-import { faker } from '@faker-js/faker';
 import { useAuthStore } from './useAuthStore';
 
 interface ChatActions {
@@ -15,14 +14,14 @@ interface ChatStore {
   actions: ChatActions;
 }
 
-const useChatStore = create<ChatStore>()(
+export const useChatStore = create<ChatStore>()(
   persist(
     (set, get) => ({
       messages: [],
       titlePage: 'Tip: Lab Zustand',
       isTyping: false,
       actions: {
-        sendMessage: (content: string) => {
+        sendMessage: async (content: string) => {
           const currentToken = useAuthStore.getState().token;
           const messageContentWithToken = currentToken
             ? `${content} - TOKEN: ${currentToken}`
@@ -31,6 +30,7 @@ const useChatStore = create<ChatStore>()(
           set({ titlePage: 'Novo title após enviar mensagem - ztd' });
 
           const humanMessage: ChatMessage = {
+            id: Date.now().toString(),
             content: messageContentWithToken,
             author: 'human',
             dateTime: new Date(),
@@ -40,16 +40,51 @@ const useChatStore = create<ChatStore>()(
           set((state) => ({ messages: [...state.messages, humanMessage] }));
           set({ isTyping: true });
 
-          setTimeout(() => {
+          try {
+            const response = await fetch(
+              'https://jsonplaceholder.typicode.com/posts',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  title: 'User Message',
+                  body: content,
+                  userId: 1,
+                }),
+              }
+            );
+
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
             const botMessage: ChatMessage = {
-              content: faker.hacker.phrase(),
+              id: (Date.now() + 1).toString(),
+              content: `Bot received your message! API response: Post ID ${data.id}`,
               author: 'bot',
               dateTime: new Date(),
               type: 'text',
             };
+
             set((state) => ({ messages: [...state.messages, botMessage] }));
+          } catch (error) {
+            const errorMessage: ChatMessage = {
+              id: (Date.now() + 1).toString(),
+              content: `Error calling API: ${
+                error instanceof Error ? error.message : String(error)
+              }`,
+              author: 'bot',
+              dateTime: new Date(),
+              type: 'text',
+            };
+            set((state) => ({ messages: [...state.messages, errorMessage] }));
+          } finally {
             set({ isTyping: false });
-          }, 1500);
+          }
         },
       },
     }),
