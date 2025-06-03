@@ -43,6 +43,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   }, [messages]);
 
   const sendMessage = (content: string) => {
+    setTitlePage('Novo title após enviar mensagem - ctx');
     const humanMessage: ChatMessage = {
       content,
       author: 'human',

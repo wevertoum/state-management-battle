@@ -31,6 +31,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   },
 
   sendMessage: (content: string) => {
+    set({ titlePage: 'Novo title após enviar mensagem - ztd' });
     const humanMessage: ChatMessage = {
       content,
       author: 'human',
