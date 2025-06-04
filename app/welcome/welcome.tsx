@@ -19,6 +19,12 @@ export function Welcome() {
           >
             Lab: Zustand
           </Link>
+          <Link
+            to='/page-a'
+            className='rounded-xl bg-purple-600 px-4 py-2 text-white hover:bg-purple-700'
+          >
+            Lab: Code Splitting
+          </Link>
         </div>
 
         <Form method='post' action='/login' className='flex flex-col gap-2'>
