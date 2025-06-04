@@ -5,6 +5,7 @@ import { useAuthStore } from './useAuthStore';
 
 interface ChatActions {
   sendMessage: (content: string) => void;
+  deleteMessage: (id: string) => void;
 }
 
 interface ChatStore {
@@ -85,6 +86,11 @@ export const useChatStore = create<ChatStore>()(
           } finally {
             set({ isTyping: false });
           }
+        },
+        deleteMessage: (id: string) => {
+          set((state) => ({
+            messages: state.messages.filter((message) => message.id !== id),
+          }));
         },
       },
     }),

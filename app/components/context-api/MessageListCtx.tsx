@@ -2,7 +2,7 @@ import { useChat } from '../../context/ChatContext';
 import { useEffect, useMemo, useRef, memo } from 'react';
 
 const MessageListCtx = memo(function MessageListCtx() {
-  const { messages, isTyping } = useChat();
+  const { messages, isTyping, deleteMessage } = useChat();
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -13,16 +13,29 @@ const MessageListCtx = memo(function MessageListCtx() {
     return messages.map((msg, i) => (
       <div
         key={i}
-        className={`whitespace-pre-wrap rounded-xl px-4 py-3 text-sm ${
-          msg.author === 'human'
-            ? 'bg-blue-600 text-white self-end'
-            : 'bg-zinc-800 border border-zinc-700 self-start'
+        className={`flex items-center gap-2 max-w-[90%] ${
+          msg.author === 'human' ? 'self-end' : 'self-start'
         }`}
       >
-        {msg.content}
+        <div
+          className={`whitespace-pre-wrap rounded-xl px-4 py-3 text-sm ${
+            msg.author === 'human'
+              ? 'bg-blue-600 text-white'
+              : 'bg-zinc-800 border border-zinc-700'
+          }`}
+        >
+          {msg.content}
+          <button
+            onClick={() => deleteMessage(msg.id)}
+            className='text-red-500 hover:text-red-700 text-sm p-2 cursor-pointer'
+            aria-label='Delete message'
+          >
+            Delete
+          </button>
+        </div>
       </div>
     ));
-  }, [messages]);
+  }, [messages, deleteMessage]);
 
   if (messages.length === 0) {
     return (

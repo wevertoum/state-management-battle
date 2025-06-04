@@ -12,6 +12,7 @@ interface ChatContextType {
   messages: ChatMessage[];
   isTyping: boolean;
   sendMessage: (content: string) => void;
+  deleteMessage: (id: string) => void;
   titlePage: string;
   setTitlePage: React.Dispatch<React.SetStateAction<string>>;
   token?: string;
@@ -54,6 +55,7 @@ export function ChatProvider({
   const sendMessage = (content: string) => {
     setTitlePage('Novo title após enviar mensagem - ctx');
     const humanMessage: ChatMessage = {
+      id: Date.now().toString(),
       content: content + ` - TOKEN: ${token}`,
       author: 'human',
       dateTime: new Date(),
@@ -65,6 +67,7 @@ export function ChatProvider({
 
     setTimeout(() => {
       const botMessage: ChatMessage = {
+        id: (Date.now() + 1).toString(),
         content: faker.hacker.phrase(),
         author: 'bot',
         dateTime: new Date(),
@@ -75,11 +78,16 @@ export function ChatProvider({
     }, 1500);
   };
 
+  const deleteMessage = (id: string) => {
+    setMessages((prev) => prev.filter((message) => message.id !== id));
+  };
+
   return (
     <ChatContext.Provider
       value={{
         messages,
         sendMessage,
+        deleteMessage,
         isTyping,
         titlePage,
         setTitlePage,
