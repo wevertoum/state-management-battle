@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router';
 
 export default function CodeSplittingLabLayout() {
@@ -45,7 +46,11 @@ export default function CodeSplittingLabLayout() {
         </nav>
       </header>
       <section className='flex-1 overflow-y-auto px-6 py-8'>
-        <Outlet />
+        <Suspense
+          fallback={<p className='text-zinc-400'>Carregando página...</p>}
+        >
+          <Outlet />
+        </Suspense>
       </section>
       <footer className='border-t border-zinc-700 bg-zinc-800 p-4 text-center text-sm text-zinc-400'>
         Code Splitting Lab - Built for Lazy Loading, Suspense, and ErrorBoundary
