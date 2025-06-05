@@ -240,9 +240,13 @@ Após enviar a mensagem "oi" 4 vezes na página que utiliza Zustand (`LabZustand
 É possívele observar visualmente todos os componentes que foram renderizados quando uma mensagem é enviada através de um destaque ao redor de cada componente.
 
 1 . **Context API:**
+É possível observar que todos os componentes que consomem o contexto são re-renderizados, mesmo que não tenham mudado o estado que consomem.
+
 ![Performance Analysis - React Context API](./assets/render_ctx.gif)
 
 2 . **Zustand:**
+Observe que apenas os componentes que consomem a parte específica do estado que foi alterada são re-renderizados.
+
 ![Performance Analysis - React Zustand](./assets/render_zdt.gif)
 
 -----
