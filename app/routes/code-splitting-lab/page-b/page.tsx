@@ -15,12 +15,16 @@ const LazyError = lazy(() =>
   delayForDemo(import('../../../components/lazy/ErrorComponent'))
 );
 
+const TileComponent = ({ label }: { label: string }) => {
+  return <h1 className='text-2xl font-semibold'>{label}</h1>;
+};
+
 export default function PageB() {
   const [showComponents, setShowComponents] = useState(false);
 
   return (
     <div className='flex flex-col gap-6'>
-      <h1 className='text-2xl font-semibold'>Page B - Suspense & Lazy</h1>
+      <TileComponent label='Page B - Carregamento sob demanda' />
       <label>
         <input
           type='checkbox'
@@ -39,7 +43,7 @@ export default function PageB() {
               </p>
             }
           >
-            <LazySlow />
+            <LazySlow label='Componente carregado com atraso!' />
           </Suspense>
 
           <ErrorBoundary
