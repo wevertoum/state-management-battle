@@ -428,3 +428,43 @@ A estrutura de rotas do projeto, utilizando o layout `CodeSplittingLabLayout.tsx
 -----
 
 ## Parte 3: Aprendizados sobre Ferramentas de debug em React
+
+Nesta seção, vamos explorar as ferramentas de debug disponíveis para React, com foco no uso do React DevTools, React Scan e alguns recursos do próprio browser para inspecionar o desempenho da aplicação.
+
+### Principais Conceitos e Funcionalidades Aprendidas
+
+  * **React DevTools (Components):**
+    A aba de Componentes do React DevTools permite inspecionar a árvore de componentes da aplicação, visualizar props e estado, e identificar re-renders.
+
+    * **Inspeção de Componentes:** É possível ver a hierarquia de componentes, suas props e estado atual. Isso ajuda a entender como os dados fluem pela aplicação, também é possível alterar props e estado diretamente na ferramenta para testar mudanças em tempo real.
+
+    ![React DevTools Components](./assets/alterando_props_react_components.gif)
+
+    * **Visualização da efetividade de Suspense:** Ao utilizar `React.lazy` e `Suspense`, é possível observar como os componentes são carregados sob demanda. A ferramenta mostra o estado de carregamento e permite verificar se o fallback está sendo exibido corretamente, além de permitir a definição manual do estado de suspense para simular diferentes cenários.
+
+    ![React DevTools Suspense](./assets/react_devtools_suspense.gif)
+
+  * **React DevTools (Profiler):**
+    A aba de Profiler permite analisar o desempenho da aplicação, identificando quais componentes estão sendo re-renderizados e quanto tempo cada renderização leva.
+
+    * **Análise de Performance:** O Profiler registra as interações do usuário e os renders dos componentes, permitindo identificar gargalos de performance. É possível ver o tempo gasto em cada renderização e quais componentes foram afetados.
+
+    ![React DevTools Profiler](./assets/react_devtools_profiler.gif)
+
+  * **Sources (Tab do inspetor do navegador):**
+    A aba Sources do inspetor do navegador permite inspecionar o código-fonte da aplicação, definir breakpoints e depurar o JavaScript. 
+
+    * **Depuração de `lazy`:** É possivel ver a efetividade de Suspense e Lazy Loading, além de analisar o fluxo de execução do código. As páginas carregadas sob demanda com `lazy` podem ser inspecionadas aqui, permitindo verificar se o código está sendo carregado corretamente.
+
+    ![Sources Tab](./assets/sources_tab.gif)
+
+  * **Outras dicas de Debug:**
+    Outras dicas úteis para depuração:
+
+    * **Omitir logs duplicados de Strict Mode:** O React DevTools pode duplicar logs no modo Strict. Para evitar isso, é possível desativar esse log nas configurações do DevTools.
+
+    ![React DevTools Settings](./assets/react_devtools_settings.png)
+
+    * **Simular lentidão de memória:** É possível simular lentidão de memória no DevTools para testar o comportamento da aplicação em condições de baixa performance. Isso pode ser feito na aba Performance (inspector do navegador).
+
+    ![Simulating Memory Latency](./assets/slowdown_memory.png)
