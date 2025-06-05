@@ -22,6 +22,8 @@ const TileComponent = ({ label }: { label: string }) => {
 export default function PageB() {
   const [showComponents, setShowComponents] = useState(false);
 
+  console.log('Page B - Carregamento sob demanda');
+
   return (
     <div className='flex flex-col gap-6'>
       <TileComponent label='Page B - Carregamento sob demanda' />
