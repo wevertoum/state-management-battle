@@ -60,7 +60,7 @@ async function streamChatCompletion({
 			headers: {
 				"Content-Type": "application/json",
 				"x-hostname": "state-management-battle",
-				"accept-language": "es",
+				"accept-language": "pt-BR",
 			},
 			body: JSON.stringify({
 				messages: formattedMessages,
